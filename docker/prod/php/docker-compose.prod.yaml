@@ -1,0 +1,35 @@
+version: '3.7'
+services:
+    database:
+        image: 'mysql:latest'
+        environment:
+            MYSQL_ROOT_PASSWORD: 
+            MYSQL_DATABASE: main
+        ports:
+            - "3306:3306"
+
+    nginx:
+        build:
+            context: ./docker/prod/nginx
+            args:
+                PROJECT_DOMAIN: project.internal
+        ports:
+            - "80:80"
+        volumes:
+            - app_data:/var/www/project:ro
+        depends_on:
+            -   php
+        restart: always
+
+    php:
+        build:
+            context: ./
+            dockerfile: ./docker/prod/php/Dockerfile
+        volumes:
+            - app_data:/var/www/project:rw
+        depends_on:
+            -   sqldata
+        restart: always
+
+volumes:
+    app_data:
