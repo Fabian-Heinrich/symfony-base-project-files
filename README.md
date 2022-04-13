@@ -1,4 +1,4 @@
-#Symfony project files
+# Symfony project files
 
 This project contains my base configuration files and development environment for new Symfony projects.
 
